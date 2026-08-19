@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us — Skillify</title>
+  <script>
+    (function () {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-auth">
+
+<!-- Background canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Quiz Arena</a></li>
+        <li><a href="about.html" class="active">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="section main-content">
+  <div class="wrap">
+
+    <!-- Hero section -->
+    <div class="section-head" style="max-width:720px; text-align:center; margin:0 auto 54px;">
+      <span class="eyebrow">Academic Self-Assessment Platform</span>
+      <h1 style="font-size:clamp(32px, 4vw, 48px); margin-bottom:16px;">CS Evaluation Engine</h1>
+      <p class="lede" style="font-size:18px; color:var(--ink-soft);">
+        Designed as part of the <strong>Front End Engineering-II (FEE-II / 25CSE0203)</strong> project. Skillify combines timed quizzardry, 1v1 peer challenges, interactive line debugging, and instant skill analytics.
+      </p>
+    </div>
+
+    <!-- System Architecture -->
+    <section style="margin-bottom:64px;" aria-label="Technical Architecture">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:28px;">
+        <div>
+          <span class="eyebrow">System Highlights</span>
+          <h2 style="font-size:26px;">Architecture &amp; Core Innovations</h2>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:22px;">
+        <article class="subject-card" style="--card-color:var(--accent)">
+          <span class="file">PURE FRONTEND</span>
+          <h3>Zero Backend Server Overhead</h3>
+          <p>Serializes scores, seeds, and times directly into URL hashes using Base64 (`btoa`). No database or server latency required!</p>
+        </article>
+        <article class="subject-card" style="--card-color:var(--web)">
+          <span class="file">INTERACTIVE</span>
+          <h3>Line Debugging &amp; Sequencing</h3>
+          <p>Interactive code line clickers for finding bugs and HTML5 Drag &amp; Drop for ordering complex SQL queries.</p>
+        </article>
+        <article class="subject-card" style="--card-color:var(--c)">
+          <span class="file">1v1 ARENA</span>
+          <h3>Dual Progress HUD &amp; QR Codes</h3>
+          <p>Real-time split-screen progress bars comparing live users against simulated CyberBot AI or friend ghost targets via QR code.</p>
+        </article>
+        <article class="subject-card" style="--card-color:var(--java)">
+          <span class="file">PERSISTENCE</span>
+          <h3>Local Score History</h3>
+          <p>Saves score attempts and performance history locally in browser storage with instant review and clear history tools.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Syllabus Modules -->
+    <section style="margin-bottom:64px;" aria-label="Syllabus topics overview">
+      <div style="margin-bottom:28px;">
+        <span class="eyebrow">Curriculum Scope</span>
+        <h2 style="font-size:26px;">5 Core Computer Science Modules</h2>
+      </div>
+
+      <div class="categories-grid">
+        <article class="subject-card" style="--card-color:var(--web)">
+          <span class="file">MODULE 01</span>
+          <h3>Frontend Engineering</h3>
+          <p>HTML5 semantic structure, CSS flexbox &amp; grid layouts, ES6+ JavaScript, DOM events, and client storage.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s Timer</span></div>
+        </article>
+        <article class="subject-card" style="--card-color:var(--dbms)">
+          <span class="file">MODULE 02</span>
+          <h3>DBMS &amp; SQL</h3>
+          <p>Relational database principles, SQL query formulation, joins, normalization (2NF/3NF/BCNF), and ACID guarantees.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s Timer</span></div>
+        </article>
+        <article class="subject-card" style="--card-color:var(--java)">
+          <span class="file">MODULE 03</span>
+          <h3>Java Programming</h3>
+          <p>Object-Oriented Programming (OOPs), inheritance, polymorphism, exception handling hierarchy, and collections.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s Timer</span></div>
+        </article>
+        <article class="subject-card" style="--card-color:var(--c)">
+          <span class="file">MODULE 04</span>
+          <h3>C Programming</h3>
+          <p>Pointers, memory address arithmetic, dynamic allocation (malloc/calloc), structures, and parameter passing.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s Timer</span></div>
+        </article>
+        <article class="subject-card" style="--card-color:var(--os)">
+          <span class="file">MODULE 05</span>
+          <h3>Operating Systems</h3>
+          <p>Process control blocks, threads, CPU scheduling algorithms (SJF, RR), deadlock conditions, and memory paging.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s Timer</span></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Team Showcase -->
+    <section aria-label="Development team metadata">
+      <article class="motion-card" style="background:var(--panel); border:1.5px solid var(--rule); border-radius:var(--radius-lg); padding:36px;">
+        <span class="eyebrow">Development Team</span>
+        <h2 style="font-size:26px; margin-bottom:12px;">Engineered by Team PID-6</h2>
+        <p style="color:var(--ink-soft); margin-bottom:24px; max-width:68ch; font-size:15px;">
+          Built using HTML5, CSS3, and ES6+ JavaScript following web accessibility standards, responsive design, and local browser persistence.
+        </p>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:18px;">
+          <div style="background:var(--paper); padding:18px; border-radius:var(--radius-sm); border:1.5px solid var(--rule);">
+            <div style="font-family:var(--font-mono); font-weight:800; font-size:15px; color:var(--accent);">Rhythm Uppal</div>
+          </div>
+          <div style="background:var(--paper); padding:18px; border-radius:var(--radius-sm); border:1.5px solid var(--rule);">
+            <div style="font-family:var(--font-mono); font-weight:800; font-size:15px; color:var(--c);">Heemanshu Singh</div>      
+          </div>
+          <div style="background:var(--paper); padding:18px; border-radius:var(--radius-sm); border:1.5px solid var(--rule);">
+            <div style="font-family:var(--font-mono); font-weight:800; font-size:15px; color:var(--web);">Pehoo Angrish</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
