@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — Skillify</title>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-auth">
+
+<!-- Background canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Quiz Arena</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html" class="active">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="main-content">
+  <div class="wrap">
+    <div class="auth-grid">
+
+      <!-- Left contact info side -->
+      <div class="hero-side">
+        <div class="hero-badge">GET IN TOUCH</div>
+        <h1 class="hero-title">We'd love to hear your <span class="accent-text">feedback &amp; ideas.</span></h1>
+        <p class="hero-desc">Have questions regarding question accuracy, suggestions for new CSE modules, or technical inquiries? Reach out directly to Team PID-6.</p>
+
+        <div style="display:flex; flex-direction:column; gap:16px; width:100%; margin-bottom:32px;">
+          <div style="background:var(--panel); border:1.5px solid var(--rule); border-radius:var(--radius-sm); padding:16px 20px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow-sm);">
+            <div style="font-size:24px;">📬</div>
+            <div>
+              <div style="font-family:var(--font-mono); font-weight:800; font-size:14px;">Direct Project Support</div>
+              <div style="font-size:13px; color:var(--ink-soft);">pid6-fee2@chitkara.edu.in</div>
+            </div>
+          </div>
+
+          <div style="background:var(--panel); border:1.5px solid var(--rule); border-radius:var(--radius-sm); padding:16px 20px; display:flex; align-items:center; gap:16px; box-shadow:var(--shadow-sm);">
+            <div style="font-size:24px;">🏛️</div>
+            <div>
+              <div style="font-family:var(--font-mono); font-weight:800; font-size:14px;">Academic Affiliation</div>
+              <div style="font-size:13px; color:var(--ink-soft);">Department of CSE · FEE-II (25CSE0203)</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stat-badge">
+          <span class="pulse-dot"></span>
+          <span>Active Response Time: Within 24 Hours</span>
+        </div>
+      </div>
+
+      <!-- Contact form card -->
+      <div class="card-wrap" id="authCardWrapper">
+        <article class="auth-box motion-card" id="authCard">
+          <div class="card-glow"></div>
+          <span class="eyebrow">Send Message</span>
+          <h1>Contact Us</h1>
+          <p class="sub">Submit your inquiry or feedback to Team PID-6.</p>
+
+          <div id="formMsg" class="form-msg"></div>
+
+          <form id="contactForm" novalidate>
+            <div class="field">
+              <label for="contactName">Your Name</label>
+              <input type="text" id="contactName" placeholder="Rahul Sharma" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="contactEmail">Email Address</label>
+              <input type="email" id="contactEmail" placeholder="student@chitkara.edu.in" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="contactSubject">Subject</label>
+              <input type="text" id="contactSubject" placeholder="Feedback on DBMS module / Feature suggestion" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="contactMessage">Message</label>
+              <textarea id="contactMessage" rows="4" placeholder="Type your detailed message here..." required></textarea>
+              <div class="field-error"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-motion">
+              <span>Send Message &rarr;</span>
+            </button>
+          </form>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="auth.js"></script>
+<script src="contact.js"></script>
+</body>
+</html>
