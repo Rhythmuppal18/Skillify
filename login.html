@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — Skillify</title>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-auth">
+
+<!-- Background canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Quiz Arena</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html" class="active">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="main-content">
+  <div class="wrap">
+    <div class="auth-grid">
+
+      <!-- Left hero side -->
+      <div class="hero-side">
+        <div class="hero-badge">COMPUTER SCIENCE QUIZZES</div>
+        <h1 class="hero-title">Level up your CS fundamentals with <span class="accent-text">real-time duels.</span></h1>
+        <p class="hero-desc">Challenge peers in 1v1 battles, inspect buggy code lines, and earn verifiable academic certificates.</p>
+
+        <div class="feature-chips">
+          <div class="chip float-1">⚔️ 1v1 Challenge Links</div>
+          <div class="chip float-2">🤖 CyberBot AI Duels</div>
+          <div class="chip float-3">🐛 Line-Click Debugger</div>
+          <div class="chip float-4">📈 Topic Skill Analytics</div>
+        </div>
+
+        <div class="stat-badge">
+          <span class="pulse-dot"></span>
+          <span>50+ Questions Across HTML, SQL, Java, C &amp; OS</span>
+        </div>
+      </div>
+
+      <!-- Auth card -->
+      <div class="card-wrap" id="authCardWrapper">
+        <article class="auth-box motion-card" id="authCard">
+          <div class="card-glow"></div>
+          <span class="eyebrow">Welcome Back</span>
+          <h1>Sign In</h1>
+          <p class="sub">Access your Skillify account, duel history, and certificates.</p>
+
+          <div id="formMsg" class="form-msg"></div>
+
+          <form id="loginForm" novalidate>
+            <div class="field">
+              <label for="loginEmail">Email Address</label>
+              <input type="email" id="loginEmail" placeholder="student@chitkara.edu.in" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="loginPassword">Password</label>
+              <input type="password" id="loginPassword" placeholder="••••••••" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:20px; font-size:13.5px; color:var(--ink-soft);">
+              <input type="checkbox" id="rememberMe" style="width:auto; cursor:pointer;">
+              <label for="rememberMe" style="font-weight:normal; margin:0; cursor:pointer;">Remember me on this device</label>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-motion">
+              <span>Sign In &rarr;</span>
+            </button>
+          </form>
+
+          <div class="auth-switch">
+            Don't have an account? <a href="register.html">Sign up here</a>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
