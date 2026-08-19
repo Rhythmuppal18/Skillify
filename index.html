@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillify — Practice Quizzes for CS Fundamentals</title>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Initial Pure CSS Page Loader Overlay (Zero JS) -->
+<div id="pageLoader" class="page-loader-overlay">
+  <div class="loader-glow-ambient"></div>
+  <div class="loader-card-box" aria-live="polite">
+    <div class="loader-badge-tag">
+      <span class="pulse-dot-light"></span>
+      Initializing Platform
+    </div>
+    <div class="loader-logo-title">
+      <span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span>
+    </div>
+    <p class="loader-sub-text">CS Academic Evaluation &amp; Assessment Arena</p>
+    <div class="loader-progress-area">
+      <div class="loader-progress-info">
+        <span>Status: Preparing Engine</span>
+        <span class="percent-counter-text"></span>
+      </div>
+      <div class="loader-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+        <div class="loader-bar-fill"></div>
+      </div>
+    </div>
+    <div class="loader-console-box">
+      <span class="console-text-anim"></span>
+    </div>
+  </div>
+</div>
+
+<!-- Background canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="quiz.html">Quiz Arena</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="main-content">
+
+  <!-- Hero section -->
+  <section class="hero wrap" aria-label="Introduction">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="hero-badge">CS QUIZ ARENA</div>
+        <h1>Test what you know.<br><span class="accent">See it in one score.</span></h1>
+        <p class="lede">Timed multiple-choice quizzes for Frontend, DBMS, Java, C Programming, and Operating Systems. Ten questions, 20 seconds, instant feedback.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary btn-motion" href="quiz.html"><span>Start Quiz Arena &rarr;</span></a>
+          <a class="btn" href="#categories">Browse Categories</a>
+        </div>
+      </div>
+      <!-- Question preview card -->
+      <div class="card-wrap" id="authCardWrapper">
+        <article class="preview-card motion-card" id="authCard" aria-label="Sample question preview">
+          <div class="card-glow"></div>
+          <div class="card-hdr">
+            <span class="card-tag">INTERACTIVE PREVIEW</span>
+            <span class="card-progress">Question 1 of 10 · 00:18</span>
+          </div>
+          <p class="question-title">Which CSS property sets the direction of a flex container's main axis items?</p>
+          <div class="options-grid" id="mcqOptions">
+            <button class="option-btn" data-correct="false">
+              <span class="opt-label">A</span><span>flex-wrap</span>
+            </button>
+            <button class="option-btn" data-correct="true">
+              <span class="opt-label">B</span><span>flex-direction</span>
+            </button>
+            <button class="option-btn" data-correct="false">
+              <span class="opt-label">C</span><span>direction</span>
+            </button>
+            <button class="option-btn" data-correct="false">
+              <span class="opt-label">D</span><span>align-items</span>
+            </button>
+          </div>
+          <p class="hint-text" id="mcqHint">💡 Click an option above to preview live interaction.</p>
+        </article>
+      </div>
+    </div>
+
+    <!-- Stats summary bar -->
+    <aside class="stats-bar" aria-label="Application summary stats">
+      <div class="stat-box">
+        <span class="stat-num">5 Core</span>
+        <span class="stat-label">CSE Subjects</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">50 Questions</span>
+        <span class="stat-label">Technical Question Bank</span>
+      </div>
+      <div class="stat-box">
+        <span class="stat-num">Instant</span>
+        <span class="stat-label">Review &amp; Certificates</span>
+      </div>
+    </aside>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how" aria-label="How it works">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Three simple steps</h2>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <div class="step-num">01</div>
+          <h3>Select Subject</h3>
+          <p>Choose from 5 core CSE modules or filter instantly using the subject search bar.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">02</div>
+          <h3>Take Timed Quiz</h3>
+          <p>Answer 10 multiple-choice questions with a 20-second timer per question.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">03</div>
+          <h3>Review &amp; Claim Certificate</h3>
+          <p>Inspect detailed explanations for every answer and claim your Certificate of Excellence at 80%+.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Special game modes -->
+  <section class="section" aria-label="Interactive features">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Game Modes</span>
+        <h2>1v1 Battle Arena &amp; Interactive Modes</h2>
+      </div>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:22px;">
+        <article class="subject-card" style="--card-color:var(--os)">
+          <span class="file">AI BATTLE</span>
+          <h3>⚔️ CyberBot AI Duel</h3>
+          <p>Race against a simulated AI bot opponent with live split-screen progress bars and instant winner reveal!</p>
+          <a class="card-link" href="quiz.html">Battle AI Bot &rarr;</a>
+        </article>
+        <article class="subject-card" style="--card-color:var(--web)">
+          <span class="file">INTERACTIVE</span>
+          <h3>🐛 Line-Click Debugging</h3>
+          <p>Inspect syntax and logic errors directly inside code blocks. Click the buggy line to score points!</p>
+          <a class="card-link" href="quiz.html">Try Find the Bug &rarr;</a>
+        </article>
+        <article class="subject-card" style="--card-color:var(--dbms)">
+          <span class="file">INTERACTIVE</span>
+          <h3>🧩 Drag &amp; Drop Sequencing</h3>
+          <p>Drag SQL query clauses (SELECT, FROM, WHERE, GROUP BY) into valid execution order using HTML5 Drag &amp; Drop.</p>
+          <a class="card-link" href="quiz.html">Try Drag &amp; Drop &rarr;</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="section section-alt" id="categories" aria-label="Quiz categories">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Pick a subject</span>
+        <h2>Five core computer science modules</h2>
+      </div>
+      <div class="categories-grid">
+        <article class="subject-card" style="--card-color:var(--web)">
+          <span class="file">FRONTEND</span>
+          <h3>Frontend Engineering</h3>
+          <p>HTML5 semantics, CSS flexbox &amp; grid, ES6+ JS syntax, DOM manipulation.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s / Q</span></div>
+          <a class="card-link" href="quiz.html">Start Frontend Quiz &rarr;</a>
+        </article>
+        <article class="subject-card" style="--card-color:var(--dbms)">
+          <span class="file">DBMS</span>
+          <h3>DBMS &amp; SQL</h3>
+          <p>ACID properties, relational joins, normalization (2NF/3NF/BCNF), B+ Trees.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s / Q</span></div>
+          <a class="card-link" href="quiz.html">Start DBMS Quiz &rarr;</a>
+        </article>
+        <article class="subject-card" style="--card-color:var(--java)">
+          <span class="file">JAVA</span>
+          <h3>Java Programming</h3>
+          <p>OOPs principles, inheritance, exception handling, collections framework.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s / Q</span></div>
+          <a class="card-link" href="quiz.html">Start Java Quiz &rarr;</a>
+        </article>
+        <article class="subject-card" style="--card-color:var(--c)">
+          <span class="file">C-PROG</span>
+          <h3>C Programming</h3>
+          <p>Pointers, address-of operator, malloc/calloc memory allocation, structs.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s / Q</span></div>
+          <a class="card-link" href="quiz.html">Start C Quiz &rarr;</a>
+        </article>
+        <article class="subject-card" style="--card-color:var(--os)">
+          <span class="file">OS</span>
+          <h3>Operating Systems</h3>
+          <p>Processes vs threads, SJF/RR CPU scheduling, deadlock conditions, paging.</p>
+          <div class="card-meta"><span>10 Questions</span><span>20s / Q</span></div>
+          <a class="card-link" href="quiz.html">Start OS Quiz &rarr;</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="wrap" style="padding-bottom:78px; padding-top: 60px;">
+    <div class="cta-panel">
+      <div>
+        <span class="eyebrow">Ready to test your knowledge?</span>
+        <h2>Launch your first timed quiz attempt now</h2>
+        <p>Pick any CSE subject, answer 10 timed questions, review detailed explanations, and claim your certificate.</p>
+      </div>
+      <a class="btn btn-primary btn-motion" href="quiz.html"><span>Launch Quiz Arena &rarr;</span></a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
