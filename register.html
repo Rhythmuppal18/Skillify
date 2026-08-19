@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — Skillify</title>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-auth">
+
+<!-- Background canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Quiz Arena</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html" class="active">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="main-content">
+  <div class="wrap">
+    <div class="auth-grid">
+
+      <!-- Left hero side -->
+      <div class="hero-side">
+        <div class="hero-badge">JOIN THE ARENA</div>
+        <h1 class="hero-title">Start your journey to <span class="accent-text">CS excellence.</span></h1>
+        <p class="hero-desc">Create your free student profile to log high scores, unlock certificates of achievement, and compete on 1v1 leaderboards.</p>
+
+        <div class="feature-chips">
+          <div class="chip float-1">📜 Verifiable Certificates</div>
+          <div class="chip float-2">⚡ 20s Timed Attempts</div>
+          <div class="chip float-3">🧩 SQL Sequence Drag &amp; Drop</div>
+          <div class="chip float-4">🔒 Local Privacy Secured</div>
+        </div>
+
+        <div class="stat-badge">
+          <span class="pulse-dot"></span>
+          <span>100% Free · Zero Server Tracking Required</span>
+        </div>
+      </div>
+
+      <!-- Auth card -->
+      <div class="card-wrap" id="authCardWrapper">
+        <article class="auth-box motion-card" id="authCard">
+          <div class="card-glow"></div>
+          <span class="eyebrow">Create Account</span>
+          <h1>Sign Up</h1>
+          <p class="sub">Register to log quiz attempts and claim your certificates.</p>
+
+          <div id="formMsg" class="form-msg"></div>
+
+          <form id="registerForm" novalidate>
+            <div class="field">
+              <label for="regName">Full Name</label>
+              <input type="text" id="regName" placeholder="Rahul Sharma" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="regEmail">Email Address</label>
+              <input type="email" id="regEmail" placeholder="student@chitkara.edu.in" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="regPassword">Password</label>
+              <input type="password" id="regPassword" placeholder="Minimum 6 characters" required>
+              <div class="field-error"></div>
+            </div>
+
+            <div class="field">
+              <label for="regConfirm">Confirm Password</label>
+              <input type="password" id="regConfirm" placeholder="Re-enter password" required>
+              <div class="field-error"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-motion">
+              <span>Create Account &rarr;</span>
+            </button>
+          </form>
+
+          <div class="auth-switch">
+            Already have an account? <a href="login.html">Sign in here</a>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
