@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Arena — Skillify</title>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="page-auth">
+
+<!-- Background canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html" class="active">Quiz Arena</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="quiz-arena">
+  <div class="wrap" id="quizViewContainer">
+
+    <!-- Game modes bar -->
+    <div class="arena-mode-bar" id="arenaModeBar">
+      <span class="mode-bar-label">GAME MODES:</span>
+      <div class="mode-chips-scroll">
+        <button class="mode-chip active" data-mode="standard" onclick="switchGameMode('standard')">🎯 Standard Quiz</button>
+        <button class="mode-chip" data-mode="ai_duel" onclick="switchGameMode('ai_duel')">⚔️ 1v1 vs AI Bot</button>
+        <button class="mode-chip" data-mode="speed_tf" onclick="switchGameMode('speed_tf')">⚡ True / False Speed</button>
+        <button class="mode-chip" data-mode="find_bug" onclick="switchGameMode('find_bug')">🐛 Find the Bug</button>
+        <button class="mode-chip" data-mode="drag_drop" onclick="switchGameMode('drag_drop')">🧩 Drag &amp; Drop</button>
+        <button class="mode-chip" data-mode="code_blank" onclick="switchGameMode('code_blank')">⌨️ Syntax Fill-in</button>
+      </div>
+    </div>
+
+    <!-- View 1: Subject Selection & Search -->
+    <section id="selectionView" aria-label="Subject selection view">
+      <div class="section-head">
+        <span class="eyebrow" id="selectionEyebrow">Select Module</span>
+        <h2 id="selectionHeading">Choose a subject to launch your test</h2>
+        <p id="selectionDesc" class="selection-desc">Timed multiple-choice quizzes across core Computer Science topics.</p>
+      </div>
+
+      <!-- Real-Time Search Bar -->
+      <div class="search-bar-wrap">
+        <input type="text" id="subjectSearch" class="search-input" placeholder="🔍 Search subjects by keyword (e.g., HTML, SQL, Pointers, OOPs, Threads)..." aria-label="Search subjects">
+      </div>
+
+      <!-- Subject Grid -->
+      <div class="categories-grid" id="subjectGrid">
+        <!-- Rendered dynamically by quiz.js -->
+      </div>
+
+      <!-- Score History & Analytics Trigger -->
+      <section class="history-section" aria-label="Local performance score history">
+        <div class="history-head">
+          <div>
+            <span class="eyebrow">Local Persistence &amp; Skill Mastery</span>
+            <h3>Recent Performance &amp; Local High Scores</h3>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-sm btn-outline-danger" onclick="clearScoreHistory()">Clear History</button>
+          </div>
+        </div>
+        <div class="history-grid" id="historyGrid">
+          <!-- Rendered dynamically by quiz.js -->
+        </div>
+      </section>
+    </section>
+
+    <!-- View 2: Pre-Quiz Guidelines -->
+    <section id="guidelinesView" style="display:none;" aria-label="Pre-quiz guidelines">
+      <article class="guidelines-card">
+        <span class="eyebrow" id="guidelinesEyebrow">Pre-Quiz Guidelines</span>
+        <h2 id="guidelinesSubjectTitle">Subject Module</h2>
+        <p id="guidelinesSubtitle">Review the test instructions below before beginning your timed attempt.</p>
+
+        <div class="guidelines-list" id="guidelinesListWrap">
+          <div class="guidelines-item">
+            <span>⏱️</span>
+            <div><strong id="guidelinesTimerText">20 Seconds Per Question:</strong> You have a total of 20 seconds per question before automatic progression.</div>
+          </div>
+          <div class="guidelines-item">
+            <span>❌</span>
+            <div><strong>No Negative Marking:</strong> Attempt all <span id="guidelinesQCount">10</span> questions to maximize your total score.</div>
+          </div>
+          <div class="guidelines-item">
+            <span>📜</span>
+            <div><strong>Certificate Threshold:</strong> Achieve <strong>80% or higher</strong> to unlock your printable Certificate of Excellence!</div>
+          </div>
+        </div>
+
+        <div style="display:flex; gap:12px; justify-content:flex-end;">
+          <button class="btn" onclick="resetToCategories()">&larr; Back to Subjects</button>
+          <button class="btn btn-primary" onclick="startQuiz()">Begin Quiz &rarr;</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- View 3: Active Quiz Arena -->
+    <section id="activeQuizView" style="display:none;" aria-label="Active quiz view">
+
+      <!-- 1v1 Split Screen HUD -->
+      <div id="duelSplitHud" class="duel-hud-card" style="display:none;">
+        <div class="duel-player-box player-user">
+          <div class="duel-player-header">
+            <span class="duel-name" id="hudPlayer1Name">👤 You</span>
+            <span class="duel-score" id="hudPlayer1Score">Score: 0</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-user" id="hudPlayer1Bar" style="width:0%"></div>
+          </div>
+        </div>
+        <div class="duel-vs-badge">VS</div>
+        <div class="duel-player-box player-opponent">
+          <div class="duel-player-header">
+            <span class="duel-name" id="hudPlayer2Name">🤖 CyberBot AI</span>
+            <span class="duel-score" id="hudPlayer2Score">Score: 0</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill fill-opponent" id="hudPlayer2Bar" style="width:0%"></div>
+          </div>
+        </div>
+      </div>
+
+      <article class="active-quiz-box" id="activeQuizBox">
+        <div class="quiz-hud">
+          <span class="hud-topic" id="hudTopicTitle">Subject Module</span>
+          <div class="hud-timer" id="timerBox">
+            ⏱️ <output id="timerCount">20s</output>
+          </div>
+        </div>
+
+        <!-- Progress Track -->
+        <div class="progress-track" aria-label="Quiz progress bar">
+          <div class="progress-fill" id="quizProgressBar"></div>
+        </div>
+
+        <div style="font-family:var(--font-mono); font-size:12.5px; color:var(--ink-soft); margin-bottom:12px;" id="hudProgressText">
+          Question 1 of 10
+        </div>
+
+        <!-- Question Prompt Header -->
+        <h3 class="question-text" id="questionText">Question prompt loading...</h3>
+
+        <!-- Speed Countdown Ring -->
+        <div id="speedTimerWrap" style="display:none; text-align:center; margin:16px 0;">
+          <svg class="speed-ring-svg" width="80" height="80">
+            <circle class="speed-ring-bg" cx="40" cy="40" r="34"></circle>
+            <circle class="speed-ring-circle" id="speedRingCircle" cx="40" cy="40" r="34"></circle>
+          </svg>
+          <div id="speedTimerVal" class="speed-timer-number">5s</div>
+        </div>
+
+        <!-- Interactive Container -->
+        <div class="options-grid" id="quizOptionsWrap">
+          <!-- Rendered dynamically by quiz.js -->
+        </div>
+
+        <!-- Quiz Controls -->
+        <div class="quiz-controls" id="quizControlsBox">
+          <button class="btn" id="prevQBtn" onclick="handlePrevQuestion()">&larr; Previous</button>
+          <button class="btn btn-primary" id="nextQBtn" onclick="handleNextQuestion()">Next Question &rarr;</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- View 4: Quiz Results & 1v1 Winner Reveal -->
+    <section id="resultsView" style="display:none;" aria-label="Quiz results breakdown">
+      <article class="results-card">
+        <span class="eyebrow" id="resultsEyebrow">Attempt Summary</span>
+        <h2 style="margin-bottom:12px;" id="resultsTitle">Quiz Completed</h2>
+
+        <!-- 1v1 Winner Banner -->
+        <div id="duelWinnerBox" class="duel-winner-box" style="display:none;">
+          <div class="winner-trophy" id="winnerIcon">🏆</div>
+          <h3 id="winnerTitle">YOU WON THE DUEL!</h3>
+          <div class="duel-stat-comparison" id="duelStatComparison">
+            <!-- Rendered dynamically -->
+          </div>
+        </div>
+
+        <div class="score-badge-ring" id="standardScoreRing">
+          <span class="score-num" id="resultsScoreVal">0%</span>
+          <span class="score-denom" id="resultsFractionText">0 of 10</span>
+        </div>
+
+        <p class="lede" style="margin:0 auto 24px;" id="resultsFeedbackMsg">Summary message...</p>
+
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:32px;">
+          <button class="btn" onclick="resetToCategories()">&larr; Choose Another Subject</button>
+          <button class="btn btn-primary" id="claimCertBtn" style="display:none;" onclick="openCertificateModal()">
+            📜 Claim Certificate of Excellence
+          </button>
+        </div>
+
+        <!-- Answer Review -->
+        <section style="text-align:left;" aria-label="Detailed answer review">
+          <h3 style="font-size:18px; margin-bottom:14px; padding-bottom:8px; border-bottom:1px solid var(--rule);">
+            Detailed Answer Review &amp; Explanations
+          </h3>
+          <div class="review-accordion" id="reviewAccordion">
+            <!-- Rendered dynamically by quiz.js -->
+          </div>
+        </section>
+      </article>
+    </section>
+
+  </div>
+</main>
+
+<!-- Printable Certificate Modal -->
+<div class="modal-overlay" id="certModal" style="display:none;" role="dialog" aria-modal="true" aria-label="Certificate of Excellence">
+  <div class="modal-content">
+    <button class="modal-close" onclick="closeCertificateModal()" aria-label="Close modal">&times;</button>
+    <article class="certificate-frame">
+      <div class="cert-header">SKILLIFY ACADEMIC EXCELLENCE</div>
+      <h2 class="cert-title">Certificate of Mastery</h2>
+      <p class="cert-body">
+        This is to certify that
+        <span class="cert-recipient" id="certRecipientName">Candidate Name</span>
+        has successfully completed the evaluation in
+        <strong id="certSubjectTitle">Subject Title</strong>
+        demonstrating outstanding performance with
+        <strong id="certScoreText">100% Accuracy</strong>.
+      </p>
+
+      <div class="cert-footer-stamp">
+        <div>
+          <span>Issued Date: <strong id="certDateText">August 1, 2026</strong></span><br>
+          <span>Evaluation Authority: <strong>Skillify Engine</strong></span>
+        </div>
+        <div style="text-align:right;">
+          <span>Verified Project Team</span><br>
+          <strong style="color:var(--accent);">PID-6</strong>
+        </div>
+      </div>
+    </article>
+
+    <div class="modal-actions" style="display:flex; gap:12px; justify-content:flex-end; margin-top:20px;">
+      <button class="btn" onclick="closeCertificateModal()">Close</button>
+      <button class="btn btn-primary" onclick="printCertificate()">🖨️ Print / Download PDF</button>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="quiz.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
