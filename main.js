@@ -14,7 +14,7 @@ function setupTheme() {
   const toggleBtn = document.getElementById('themeToggleBtn');
   if (!toggleBtn) return;
 
-  const currentTheme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
+  const currentTheme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'dark';
   applyTheme(currentTheme);
 
   toggleBtn.addEventListener('click', () => {
