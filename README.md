@@ -6,7 +6,7 @@
 
 **Skillify** is a browser-based quiz platform for Computer Science. It goes beyond static multiple-choice questions with six interactive game modes, including code-line debugging, drag-and-drop sequencing, rapid-fire speed rounds, and a 1v1 duel against an AI bot. It is built with plain HTML, CSS, and JavaScript, so there is nothing to install.
 
-**[🚀 Live Demo](#) | [🐛 Report a Bug](https://github.com/Rhythmuppal18/Skillify/issues)**
+* [🐛 Report a Bug](https://github.com/Rhythmuppal18/Skillify/issues)**
 
 ---
 
