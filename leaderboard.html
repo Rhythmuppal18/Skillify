@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en" class="dark-theme">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skillify — Academic Hall of Fame & Leaderboard</title>
+  <script>
+    (function() {
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'dark';
+      if (theme !== 'light') {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
+    })();
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Leaderboard Page Layout & Responsive Media Styling */
+    .leaderboard-hero {
+      padding: 56px 0 24px;
+      text-align: center;
+    }
+    
+    /* Summary Metric Grid */
+    .stat-cards-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+    @media (max-width: 860px) {
+      .stat-cards-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 480px) {
+      .stat-cards-row {
+        grid-template-columns: 1fr;
+      }
+    }
+    .summary-card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-md);
+      padding: 18px 16px;
+      text-align: center;
+      transition: transform var(--transition), border-color var(--transition);
+    }
+    .summary-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--accent);
+    }
+    .summary-val {
+      font-size: 1.85rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: var(--font-mono);
+      margin-bottom: 4px;
+      letter-spacing: -0.02em;
+    }
+    .summary-lbl {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-muted);
+      font-weight: 600;
+    }
+
+    /* Table Container Card */
+    .leaderboard-table-card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card);
+      overflow: hidden;
+      margin: 28px 0 64px;
+      transition: border-color var(--transition), box-shadow var(--transition);
+    }
+    .card-top-bar {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      background: var(--surface-alt, rgba(0,0,0,0.03));
+    }
+    .card-top-bar h2 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Structured Table */
+    table.skillify-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    table.skillify-table th {
+      padding: 16px 22px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--ink-muted);
+      border-bottom: 1px solid var(--rule);
+      background: var(--surface);
+      white-space: nowrap;
+    }
+    table.skillify-table td {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--rule);
+      color: var(--ink);
+      font-size: 0.95rem;
+      vertical-align: middle;
+      transition: background var(--transition);
+    }
+
+    /* Row Accents based on Placement */
+    tr.row-rank-1 {
+      background: linear-gradient(90deg, rgba(245, 158, 11, 0.07) 0%, transparent 60%);
+    }
+    tr.row-rank-2 {
+      background: linear-gradient(90deg, rgba(148, 163, 184, 0.06) 0%, transparent 60%);
+    }
+    tr.row-rank-3 {
+      background: linear-gradient(90deg, rgba(217, 119, 6, 0.06) 0%, transparent 60%);
+    }
+    table.skillify-table tr:hover {
+      background: var(--surface-hover, rgba(74, 222, 128, 0.05));
+    }
+
+    /* ==============================================================
+       BEAUTIFIED MEDAL & PODIUM STRUCTURE
+       ============================================================== */
+    .medal-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .medal-podium-chip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      user-select: none;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .medal-podium-chip:hover {
+      transform: scale(1.05);
+    }
+
+    /* 🥇 Radiant Gold Medal (1st Place) */
+    .chip-gold {
+      background: linear-gradient(135deg, #FFE066 0%, #F59E0B 50%, #D97706 100%);
+      color: #1A1302;
+      box-shadow: 0 4px 18px rgba(245, 158, 11, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.7);
+      border: 1px solid #FBBF24;
+    }
+    .chip-gold .medal-icon {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+      font-size: 1.15rem;
+    }
+
+    /* 🥈 Platinum Chrome Silver Medal (2nd Place) */
+    .chip-silver {
+      background: linear-gradient(135deg, #FFFFFF 0%, #CBD5E1 50%, #94A3B8 100%);
+      color: #0F172A;
+      box-shadow: 0 4px 14px rgba(148, 163, 184, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.8);
+      border: 1px solid #E2E8F0;
+    }
+    .chip-silver .medal-icon {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+      font-size: 1.15rem;
+    }
+
+    /* 🥉 Radiant Copper Bronze Medal (3rd Place) */
+    .chip-bronze {
+      background: linear-gradient(135deg, #FED7AA 0%, #FB923C 45%, #C2410C 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.5);
+      border: 1px solid #FDBA74;
+    }
+    .chip-bronze .medal-icon {
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+      font-size: 1.15rem;
+    }
+
+    /* Standard Placement Badges (#4, #5) */
+    .chip-standard {
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--ink-muted);
+      border: 1px solid var(--rule);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      padding: 6px 12px;
+    }
+    .chip-standard .rank-num {
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* Candidate Visual Row Styling */
+    .candidate-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .candidate-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      font-size: 0.8rem;
+      border: 1px solid var(--rule);
+      background: var(--surface-alt, rgba(0,0,0,0.2));
+      color: var(--ink);
+      flex-shrink: 0;
+    }
+    .avatar-gold { border-color: #F59E0B; background: rgba(245, 158, 11, 0.15); color: #FBBF24; }
+    .avatar-silver { border-color: #94A3B8; background: rgba(148, 163, 184, 0.15); color: #CBD5E1; }
+    .avatar-bronze { border-color: #EA580C; background: rgba(234, 88, 12, 0.15); color: #FB923C; }
+
+    .candidate-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .candidate-name {
+      font-weight: 700;
+      color: var(--ink);
+      font-size: 0.98rem;
+    }
+    .candidate-id {
+      font-size: 0.74rem;
+      color: var(--ink-muted);
+      font-family: var(--font-mono);
+      margin-top: 1px;
+    }
+
+    /* Score Chips */
+    .score-chip {
+      background: rgba(74, 222, 128, 0.12);
+      color: var(--accent);
+      border: 1px solid rgba(74, 222, 128, 0.3);
+      padding: 5px 14px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-mono);
+      font-weight: 800;
+      font-size: 0.85rem;
+      display: inline-block;
+    }
+    
+    .accuracy-indicator {
+      font-weight: 800;
+      font-family: var(--font-mono);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Background Interactive Particle Canvas -->
+<canvas id="particleCanvas" class="bg-canvas"></canvas>
+
+<!-- Shared Site Header with all Theme & FX Controls -->
+<header id="site-header" class="site-header">
+  <nav class="navbar wrap">
+    <a class="logo" href="index.html"><span class="prompt">&gt;</span>&nbsp;Skillify<span class="cursor"></span></a>
+
+    <div class="nav-tools">
+      <ul id="nav-links" class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="quiz.html">Quiz Arena</a></li>
+        <li><a href="leaderboard.html" class="active">Leaderboard</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+        <li class="hide-auth"><a href="register.html">Sign Up</a></li>
+        <li class="hide-auth"><a href="login.html">Sign In</a></li>
+        <li class="show-auth" hidden><span id="userGreeting" class="user-name"></span></li>
+        <li class="show-auth" hidden><a href="#" id="logoutLink">Logout</a></li>
+      </ul>
+
+      <button id="themeToggleBtn" class="theme-btn" aria-label="Toggle light and dark mode" title="Toggle light/dark theme">🌙</button>
+      <button id="fxToggleBtn" class="theme-btn" aria-label="Toggle background particles" title="Toggle background particles">✨</button>
+
+      <button class="nav-toggle" id="navToggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span>
+      </button>
+    </div>
+  </nav>
+</header>
+
+<main id="top" class="main-content">
+  <div class="wrap">
+    
+    <!-- Hero Header -->
+    <section class="leaderboard-hero">
+      <span class="eyebrow">Academic Assessment</span>
+      <h1 style="margin: 10px 0 8px;">Evaluation <span class="highlight">Leaderboard.</span></h1>
+      <p class="lede" style="margin: 0 auto; max-width: 600px;">
+        Standardized academic cohort rankings ordered strictly by evaluation scores and accuracy percentages.
+      </p>
+
+      <!-- Summary Metrics Grid -->
+      <div class="stat-cards-row">
+        <div class="summary-card">
+          <div class="summary-val">100%</div>
+          <div class="summary-lbl">Benchmark Top</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-val">80%</div>
+          <div class="summary-lbl">Cohort Average</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-val">5</div>
+          <div class="summary-lbl">Ranked Candidates</div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-val">80%</div>
+          <div class="summary-lbl">Distinction Rate</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Leaderboard Table with BEAUTIFIED 3D PODIUM MEDALS & CANDIDATE AVATARS -->
+    <article class="leaderboard-table-card">
+      <div class="card-top-bar">
+        <h2><span>🏆</span> Ranked Evaluation Standings</h2>
+        <span style="font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent); font-weight: 700;">
+          Ranked by Marks (High &rarr; Low)
+        </span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table class="skillify-table">
+          <thead>
+            <tr>
+              <th style="width: 140px;">Podium Rank</th>
+              <th>Candidate Profile</th>
+              <th>Specialization Subject</th>
+              <th>Evaluation Score</th>
+              <th style="text-align: right;">Accuracy Rate</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <!-- Rank 1: Alex Rivers (🥇 Gold Medal) -->
+            <tr class="row-rank-1">
+              <td>
+                <div class="medal-container">
+                  <div class="medal-podium-chip chip-gold" title="1st Place - Gold Medalist">
+                    <span class="medal-icon">🥇</span>
+                    <span class="rank-title">1st Place</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="candidate-cell">
+                  <span class="candidate-avatar avatar-gold">AR</span>
+                  <div class="candidate-info">
+                    <span class="candidate-name">Alex Rivers</span>
+                    <span class="candidate-id">ID: SKL-2026-01</span>
+                  </div>
+                </div>
+              </td>
+              <td>Frontend Engineering (HTML/CSS/JS)</td>
+              <td><span class="score-chip">10 / 10</span></td>
+              <td style="text-align: right;"><span class="accuracy-indicator" style="color: #4ADE80;">100% (Perfect)</span></td>
+            </tr>
+
+            <!-- Rank 2: Priya Sharma (🥈 Silver Medal) -->
+            <tr class="row-rank-2">
+              <td>
+                <div class="medal-container">
+                  <div class="medal-podium-chip chip-silver" title="2nd Place - Silver Medalist">
+                    <span class="medal-icon">🥈</span>
+                    <span class="rank-title">2nd Place</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="candidate-cell">
+                  <span class="candidate-avatar avatar-silver">PS</span>
+                  <div class="candidate-info">
+                    <span class="candidate-name">Priya Sharma</span>
+                    <span class="candidate-id">ID: SKL-2026-02</span>
+                  </div>
+                </div>
+              </td>
+              <td>Database Management &amp; SQL (DBMS)</td>
+              <td><span class="score-chip" style="background: rgba(148, 163, 184, 0.15); color: #CBD5E1; border-color: rgba(148, 163, 184, 0.35);">9 / 10</span></td>
+              <td style="text-align: right;"><span class="accuracy-indicator" style="color: #4ADE80;">90% Accuracy</span></td>
+            </tr>
+
+            <!-- Rank 3: David Chen (🥉 Bronze Medal) -->
+            <tr class="row-rank-3">
+              <td>
+                <div class="medal-container">
+                  <div class="medal-podium-chip chip-bronze" title="3rd Place - Bronze Medalist">
+                    <span class="medal-icon">🥉</span>
+                    <span class="rank-title">3rd Place</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="candidate-cell">
+                  <span class="candidate-avatar avatar-bronze">DC</span>
+                  <div class="candidate-info">
+                    <span class="candidate-name">David Chen</span>
+                    <span class="candidate-id">ID: SKL-2026-03</span>
+                  </div>
+                </div>
+              </td>
+              <td>Java Programming &amp; OOP Concepts</td>
+              <td><span class="score-chip" style="background: rgba(249, 115, 22, 0.15); color: #FB923C; border-color: rgba(249, 115, 22, 0.35);">8 / 10</span></td>
+              <td style="text-align: right;"><span class="accuracy-indicator" style="color: #6EE7B7;">80% Accuracy</span></td>
+            </tr>
+
+            <!-- Rank 4: Sarah Jenkins -->
+            <tr>
+              <td>
+                <div class="medal-container">
+                  <div class="medal-podium-chip chip-standard">
+                    <span class="rank-num">#4</span>
+                    <span style="font-size: 0.75rem; opacity: 0.7;">Rank</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="candidate-cell">
+                  <span class="candidate-avatar">SJ</span>
+                  <div class="candidate-info">
+                    <span class="candidate-name">Sarah Jenkins</span>
+                    <span class="candidate-id">ID: SKL-2026-04</span>
+                  </div>
+                </div>
+              </td>
+              <td>Operating Systems &amp; Concurrency</td>
+              <td><span class="score-chip" style="background: rgba(255, 255, 255, 0.06); color: var(--ink-muted); border-color: var(--rule);">7 / 10</span></td>
+              <td style="text-align: right;"><span class="accuracy-indicator" style="color: #A7F3D0;">70% Accuracy</span></td>
+            </tr>
+
+            <!-- Rank 5: Liam Patel -->
+            <tr>
+              <td>
+                <div class="medal-container">
+                  <div class="medal-podium-chip chip-standard">
+                    <span class="rank-num">#5</span>
+                    <span style="font-size: 0.75rem; opacity: 0.7;">Rank</span>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="candidate-cell">
+                  <span class="candidate-avatar">LP</span>
+                  <div class="candidate-info">
+                    <span class="candidate-name">Liam Patel</span>
+                    <span class="candidate-id">ID: SKL-2026-05</span>
+                  </div>
+                </div>
+              </td>
+              <td>Core C Programming &amp; Memory</td>
+              <td><span class="score-chip" style="background: rgba(255, 255, 255, 0.06); color: var(--ink-muted); border-color: var(--rule);">6 / 10</span></td>
+              <td style="text-align: right;"><span class="accuracy-indicator" style="color: #FBBF24;">60% Accuracy</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="foot-top">
+      <div class="foot-team">
+        <span class="foot-team-title">Project Team PID-6</span>
+        <div class="team-members">
+          <span class="member-badge">Rhythm Uppal (TL)</span>
+          <span class="member-badge">Heemanshu Singh</span>
+          <span class="member-badge">Pehoo Angrish</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot-row">
+      <span>© 2026 Skillify · FEE-II Project</span>
+      <div class="foot-links">
+        <a href="about.html">About Us</a>
+        <a href="contact.html">Contact Us</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="main.js"></script>
+<script src="auth.js"></script>
+</body>
+</html>
