@@ -1,3 +1,16 @@
+
+/* ---- Fisher-Yates Randomization Engine ---- */
+function shuffleArray(array) {
+  if (!Array.isArray(array)) return [];
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+window.shuffleArray = shuffleArray;
+
 // Skillify Core Engine & Question Bank
 // Team PID-6 - FEE-II Project
 // Subjects: Frontend, DBMS, Java, C, Operating Systems
@@ -808,10 +821,11 @@ window.selectCategory = function(key) {
 
 /* ---- Begin Quiz ---- */
 window.startQuiz = function() {
+  // Randomly shuffle questions on every quiz attempt for freshness
   if (['find_bug', 'drag_drop', 'code_blank', 'speed_tf'].includes(state.gameMode)) {
-    state.questions = [...(INTERACTIVE_DATA[state.gameMode][state.currentCategoryKey] || [])];
+    state.questions = shuffleArray(INTERACTIVE_DATA[state.gameMode][state.currentCategoryKey] || []);
   } else {
-    state.questions = [...QUIZ_DATA[state.currentCategoryKey].questions];
+    state.questions = shuffleArray(QUIZ_DATA[state.currentCategoryKey].questions || []);
   }
 
   state.currentIndex = 0;
@@ -1563,3 +1577,11 @@ function showToast(msg) {
   document.body.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
+
+
+/* ---- Retake Quiz with Freshly Shuffled Questions ---- */
+window.retakeCurrentQuiz = function() {
+  if (typeof startQuiz === 'function') {
+    startQuiz();
+  }
+};

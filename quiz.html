@@ -1,13 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark-theme">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quiz Arena — Skillify</title>
   <script>
     (function() {
-      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'light';
-      if (theme === 'dark') document.documentElement.classList.add('dark-theme');
+      const theme = localStorage.getItem('skillify_theme') || localStorage.getItem('quizze_theme') || 'dark';
+      if (theme !== 'light') {
+        document.documentElement.classList.add('dark-theme');
+      } else {
+        document.documentElement.classList.remove('dark-theme');
+      }
     })();
   </script>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,7 +29,9 @@
     <div class="nav-tools">
       <ul id="nav-links" class="nav-links">
         <li><a href="index.html">Home</a></li>
-        <li><a href="quiz.html" class="active">Quiz Arena</a></li>
+        <li><a href="quiz.html" class="active">Quiz Arena</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            </li>
         <li><a href="about.html">About Us</a></li>
         <li><a href="contact.html">Contact Us</a></li>
         <li class="hide-auth"><a href="register.html">Sign Up</a></li>
@@ -215,6 +221,7 @@
         <p class="lede" style="margin:0 auto 24px;" id="resultsFeedbackMsg">Summary message...</p>
 
         <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:32px;">
+          <button class="btn" onclick="retakeCurrentQuiz()">🔄 Retake with Shuffled Questions</button>
           <button class="btn" onclick="resetToCategories()">&larr; Choose Another Subject</button>
           <button class="btn btn-primary" id="claimCertBtn" style="display:none;" onclick="openCertificateModal()">
             📜 Claim Certificate of Excellence
@@ -297,5 +304,5 @@
 <script src="main.js"></script>
 <script src="quiz.js"></script>
 <script src="auth.js"></script>
-</body>
+    </body>
 </html>
