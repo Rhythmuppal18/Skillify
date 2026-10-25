@@ -1,4 +1,5 @@
 // User authentication & background particle animation
+// --- Promises are used to simulate asynchronous auth operations ---
 
 document.addEventListener('DOMContentLoaded', () => {
   setupParticleCanvas();
@@ -172,6 +173,43 @@ function setupCardTilt() {
   });
 }
 
+/* ---- Promise-based helper: simulates network delay ---- */
+function simulateDelay(ms) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+}
+
+/* ---- Promise-based helper: checks if a user already exists ---- */
+function checkExistingUser(email) {
+  return new Promise((resolve, reject) => {
+    const users = JSON.parse(
+      localStorage.getItem('skillify_users') ||
+      localStorage.getItem('quizze_users') ||
+      '[]'
+    );
+    const existing = users.find(
+      u => u.email.toLowerCase() === email.toLowerCase()
+    );
+    if (existing) {
+      reject(new Error('An account with this email already exists.'));
+    } else {
+      resolve(users);
+    }
+  });
+}
+
+/* ---- Promise-based helper: registers a new user ---- */
+function registerNewUser(users, name, email, password) {
+  return new Promise((resolve) => {
+    const newUser = { name, email: email.toLowerCase(), password };
+    users.push(newUser);
+    localStorage.setItem('skillify_users', JSON.stringify(users));
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    resolve(newUser);
+  });
+}
+
 function setupRegisterForm() {
   const form = document.getElementById('registerForm');
   if (!form) return;
@@ -221,32 +259,43 @@ function setupRegisterForm() {
     submitBtn.classList.add('loading');
     submitBtn.innerHTML = `<span>Registering Account...</span>`;
 
-    setTimeout(() => {
-      const users = JSON.parse(localStorage.getItem('skillify_users') || localStorage.getItem('quizze_users') || '[]');
-      const existing = users.find(u => u.email.toLowerCase() === emailInput.value.trim().toLowerCase());
-
-      if (existing) {
-        showMessage(msgBox, 'An account with this email already exists.', 'error');
+    // --- Promise chain: delay -> check existing -> register -> redirect ---
+    simulateDelay(600)
+      .then(() => checkExistingUser(emailInput.value.trim()))
+      .then((users) => registerNewUser(users, nameInput.value.trim(), emailInput.value.trim(), passInput.value))
+      .then(() => {
+        showMessage(msgBox, 'Account created! Redirecting to Quiz Arena...', 'success');
+        return simulateDelay(1000);
+      })
+      .then(() => {
+        window.location.href = 'quiz.html';
+      })
+      .catch((err) => {
+        showMessage(msgBox, err.message, 'error');
+      })
+      .finally(() => {
         submitBtn.classList.remove('loading');
         submitBtn.innerHTML = `<span>Create Account &rarr;</span>`;
-        return;
-      }
+      });
+  });
+}
 
-      const newUser = {
-        name: nameInput.value.trim(),
-        email: emailInput.value.trim().toLowerCase(),
-        password: passInput.value
-      };
-
-      users.push(newUser);
-      localStorage.setItem('skillify_users', JSON.stringify(users));
-      localStorage.setItem('currentUser', JSON.stringify(newUser));
-
-      showMessage(msgBox, 'Account created! Redirecting to Quiz Arena...', 'success');
-      setTimeout(() => {
-        window.location.href = 'quiz.html';
-      }, 1000);
-    }, 600);
+/* ---- Promise-based helper: authenticates a user ---- */
+function authenticateUser(email, password) {
+  return new Promise((resolve, reject) => {
+    const users = JSON.parse(
+      localStorage.getItem('skillify_users') ||
+      localStorage.getItem('quizze_users') ||
+      '[]'
+    );
+    const user = users.find(
+      u => u.email.toLowerCase() === email.toLowerCase() && u.password === password
+    );
+    if (user) {
+      resolve(user);
+    } else {
+      reject(new Error('Invalid email or password.'));
+    }
   });
 }
 
@@ -283,30 +332,28 @@ function setupLoginForm() {
     submitBtn.classList.add('loading');
     submitBtn.innerHTML = `<span>Authenticating...</span>`;
 
-    setTimeout(() => {
-      const users = JSON.parse(localStorage.getItem('skillify_users') || localStorage.getItem('quizze_users') || '[]');
-      const user = users.find(
-        u => u.email.toLowerCase() === emailInput.value.trim().toLowerCase() && u.password === passInput.value
-      );
-
-      if (!user) {
-        showMessage(msgBox, 'Invalid email or password.', 'error');
+    // --- Promise chain: delay -> authenticate -> save session -> redirect ---
+    simulateDelay(600)
+      .then(() => authenticateUser(emailInput.value.trim(), passInput.value))
+      .then((user) => {
+        if (rememberMe && rememberMe.checked) {
+          localStorage.setItem('currentUser', JSON.stringify(user));
+        } else {
+          sessionStorage.setItem('currentUser', JSON.stringify(user));
+        }
+        showMessage(msgBox, 'Welcome back! Redirecting to Quiz Arena...', 'success');
+        return simulateDelay(900);
+      })
+      .then(() => {
+        window.location.href = 'quiz.html';
+      })
+      .catch((err) => {
+        showMessage(msgBox, err.message, 'error');
+      })
+      .finally(() => {
         submitBtn.classList.remove('loading');
         submitBtn.innerHTML = `<span>Sign In &rarr;</span>`;
-        return;
-      }
-
-      if (rememberMe && rememberMe.checked) {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-      } else {
-        sessionStorage.setItem('currentUser', JSON.stringify(user));
-      }
-
-      showMessage(msgBox, 'Welcome back! Redirecting to Quiz Arena...', 'success');
-      setTimeout(() => {
-        window.location.href = 'quiz.html';
-      }, 900);
-    }, 600);
+      });
   });
 }
 
