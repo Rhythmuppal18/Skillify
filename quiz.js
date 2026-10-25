@@ -855,8 +855,18 @@ window.startQuiz = function() {
   loadQuestion(0);
 };
 
-/* ---- Synchronized AI Bot Opponent Engine ---- */
-function triggerAiQuestionAnswer(index) {
+/* ---- Synchronized AI Bot Opponent Engine (ES6 Promise & Async/Await) ---- */
+// 1. Non-blocking delay using native ES6 Promise constructor
+function delayAiThinking(ms) {
+  return new Promise((resolve) => {
+    state.aiTimerTimeout = setTimeout(() => {
+      resolve({ status: "ready", latency: ms });
+    }, ms);
+  });
+}
+
+// 2. Consuming the Promise inside asynchronous game loop
+async function triggerAiQuestionAnswer(index) {
   clearTimeout(state.aiTimerTimeout);
   if (state.isFinished || index >= state.questions.length) return;
   if (!state.aiAnsweredMap) state.aiAnsweredMap = {};
@@ -866,15 +876,17 @@ function triggerAiQuestionAnswer(index) {
   updateDuelHud();
 
   const thinkDelay = Math.floor(Math.random() * 1200) + 1200;
-  state.aiTimerTimeout = setTimeout(() => {
-    if (state.isFinished || state.aiAnsweredMap[index]) return;
-    state.aiAnsweredMap[index] = true;
-    const isCorrect = Math.random() < 0.70;
-    if (isCorrect) state.aiScore++;
-    state.aiCurrentIndex = Math.max(state.aiCurrentIndex, index + 1);
-    state.aiStatusText = isCorrect ? "Answered ✔" : "Answered ✖";
-    updateDuelHud();
-  }, thinkDelay);
+
+  // Await the Promise: UI, timers & canvas stay fluid without blocking the main thread
+  await delayAiThinking(thinkDelay);
+
+  if (state.isFinished || state.aiAnsweredMap[index]) return;
+  state.aiAnsweredMap[index] = true;
+  const isCorrect = Math.random() < 0.70;
+  if (isCorrect) state.aiScore++;
+  state.aiCurrentIndex = Math.max(state.aiCurrentIndex, index + 1);
+  state.aiStatusText = isCorrect ? "Answered ✔" : "Answered ✖";
+  updateDuelHud();
 }
 
 function updateDuelHud() {
@@ -1585,3 +1597,23 @@ window.retakeCurrentQuiz = function() {
     startQuiz();
   }
 };
+
+/* ---- Auto-Start Quiz from URL Parameters ---- */
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const m = params.get('mode');
+    const s = params.get('subject');
+    if (m && s && typeof switchGameMode === 'function' && typeof selectCategory === 'function') {
+      setTimeout(() => {
+        switchGameMode(m);
+        selectCategory(s);
+        if (typeof startQuiz === 'function') {
+          startQuiz();
+        }
+      }, 100);
+    }
+  } catch (err) {
+    console.warn('URL auto-start:', err);
+  }
+});

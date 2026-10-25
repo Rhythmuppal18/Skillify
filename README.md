@@ -1,305 +1,195 @@
-# 🧠 Skillify — Next-Gen Computer Science Quiz Arena & Interactive Learning Platform
+# ⚡ Skillify — Computer Science Academic Evaluation Arena
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![Platform: Web](https://img.shields.io/badge/Platform-HTML5%20%7C%20CSS3%20%7C%20ES6%2B-blue.svg)]()
-[![Theme: Light / Dark](https://img.shields.io/badge/Theme-Light%20%2F%20Dark%20Forest-success.svg)]()
+<p align="center">
+  <img src="https://img.shields.io/badge/Skillify-Phase%202%20Complete-4ADE80?style=for-the-badge&logo=codeforces&logoColor=black" alt="Phase 2 Badge">
+  <img src="https://img.shields.io/badge/Stack-HTML5%20%7C%20CSS3%20%7C%20Vanilla%20JS-38BDF8?style=for-the-badge&logo=javascript&logoColor=black" alt="Tech Stack">
+  <img src="https://img.shields.io/badge/Theme-Dark%20Forest%20Green-22C55E?style=for-the-badge&logo=treehouse&logoColor=white" alt="Dark Forest Theme">
+  <img src="https://img.shields.io/badge/Team-PID--6%20%28FEE--II%29-F59E0B?style=for-the-badge" alt="Team PID-6">
+</p>
 
-**Skillify** is a browser-based quiz platform for Computer Science. It goes beyond static multiple-choice questions with six interactive game modes, including code-line debugging, drag-and-drop sequencing, rapid-fire speed rounds, and a 1v1 duel against an AI bot. It is built with plain HTML, CSS, and JavaScript, so there is nothing to install.
-
-* [🐛 Report a Bug](https://github.com/Rhythmuppal18/Skillify/issues)**
-
----
-
-## 📋 Table of Contents
-
-- [Overview](#-overview)
-- [Key Features & Game Modes](#-key-features--game-modes)
-  - [1. Standard Quiz Arena](#1--standard-quiz-arena)
-  - [2. 1v1 vs AI Bot (CyberBot)](#2--1v1-vs-ai-bot-cyberbot)
-  - [3. True / False Speed Challenge](#3--true--false-speed-challenge)
-  - [4. Find the Bug Code Line Picker](#4--find-the-bug-code-line-picker)
-  - [5. Drag & Drop Sequencing Engine](#5--drag--drop-sequencing-engine)
-  - [6. Syntax Fill-in Challenge](#6--syntax-fill-in-challenge)
-- [Subject Modules](#-subject-modules)
-- [Application Architecture & State Management](#-application-architecture--state-management)
-- [Design System & Theme Engine](#-design-system--theme-engine)
-- [Project File Map](#-project-file-map)
-- [Authentication & Data Persistence](#-authentication--data-persistence)
-- [Keyboard Controls & Shortcuts](#-keyboard-controls--shortcuts)
-- [Installation & Local Setup](#-installation--local-setup)
-- [Certification Engine](#-certification-engine)
-- [Viva & Technical Examination Guide](#-viva--technical-examination-guide)
-- [License & Acknowledgments](#-license--acknowledgments)
+<p align="center">
+  <strong>An interactive, high-performance web platform for testing core Computer Science fundamentals across 7 distinct challenge modes, dynamic question randomization, 3D medal podium leaderboards, and instant academic evaluation.</strong>
+</p>
 
 ---
 
-## 🌟 Overview
-
-Skillify turns traditional technical quizzes into an active learning experience. Instead of relying only on recall questions, it offers interactive modes that test whether you can debug code, order steps correctly, answer under time pressure, and compete against a simulated opponent.
-
-### Core Objectives
-- **Conceptual Mastery**: Reinforce core Computer Science theory across Java, Web Development, C, DBMS, and Operating Systems.
-- **Multimodal Evaluation**: Test knowledge through recall, syntax completion, code debugging, and sequence placement.
-- **Detailed Review**: Show explanations, side-by-side sequence comparisons, and score breakdowns after each session.
-- **Clean Visual Design**: Light and dark themes, smooth animations (can be turned off), and readable typography.
-
----
-
-## 🎮 Key Features & Game Modes
-
-Skillify offers **6 game modes**, selectable at any time from the navigation chips in the Quiz Arena:
-
-```
-GAME MODES:  🎯 Standard | ⚔️ 1v1 AI Bot | ⚡ Speed T/F | 🐛 Find Bug | 🧩 Drag & Drop | ⌨️ Fill-in
-```
+## 📌 Table of Contents
+- [✨ What's New in Phase 2](#-whats-new-in-phase-2)
+- [🎮 7 Interactive Game Modes](#-7-interactive-game-modes)
+- [📚 Core Subject Modules](#-core-subject-modules)
+- [🎲 Fisher-Yates Shuffling Engine](#-fisher-yates-shuffling-engine)
+- [🏆 Hall of Fame Leaderboard & 3D Medals](#-hall-of-fame-leaderboard--3d-medals)
+- [🌲 Design System & Dark Forest Green Theme](#-design-system--dark-forest-green-theme)
+- [📂 Project Directory Structure](#-project-directory-structure)
+- [👥 Project Team (PID-6)](#-project-team-pid-6)
+- [🚀 Quick Start & How to Run](#-quick-start--how-to-run)
+- [📜 Certificate of Mastery Engine](#-certificate-of-mastery-engine)
 
 ---
 
-### 1. 🎯 Standard Quiz Arena
-- **Description**: The classic timed evaluation mode.
-- **Timer**: 20 seconds per question.
-- **Features**:
-  - Option cards labeled A, B, C, D with immediate visual highlight on selection.
-  - Progress bar showing current question and overall completion.
-  - Certificate eligibility at a score of 80% or higher.
+## ✨ What's New in Phase 2
 
----
-
-### 2. ⚔️ 1v1 vs AI Bot (CyberBot)
-- **Description**: A head-to-head mode against a simulated opponent, **CyberBot**.
-- **Features**:
-  - Live split scoreboard comparing your score with CyberBot's.
-  - Simulated response times for each question.
-  - Victory, Defeat, or Draw banner with a performance comparison at the end.
-
----
-
-### 3. ⚡ True / False Speed Challenge
-- **Description**: Rapid-fire statements that test quick recall.
-- **Timer**: 5 seconds per question.
-- **Features**:
-  - Animated circular SVG timer that empties as time runs down.
-  - Color changes from green to orange (warning) to red (danger).
-  - Keyboard shortcuts (`T` / `F` or `←` / `→`) for fast answers.
-
----
-
-### 4. 🐛 Find the Bug Code Line Picker
-- **Description**: Code snippets with a logical or syntax error. Candidates identify the faulty line.
-- **Features**:
-  - Code shown in monospace font (`JetBrains Mono`) with line numbers.
-  - Click any line to mark it as the bug.
-  - Highlighted error line and toast notifications.
-  - Review screen explains why the selected line is wrong.
-
----
-
-### 5. 🧩 Drag & Drop Sequencing Engine
-- **Description**: Put steps in the correct order, such as execution flow, process lifecycle, compilation stages, or SQL clause order.
-- **Input methods**:
-  - 🖱️ **Mouse**: Drag items with drop-line indicators showing where they will land.
-  - 📱 **Touch**: Drag on phones and tablets.
-  - 🔼🔽 **Buttons**: ▲ Move Up and ▼ Move Down on every card. Buttons are disabled at the first and last positions.
-  - ⌨️ **Keyboard**: `↑` / `↓` on a focused item.
-- **UI elements**:
-  - Step badges (`01`, `02`, `03`...) showing the current order.
-  - A **🔄 Reset Order** button to restore the default order.
-  - A scrollable sequence container for long lists.
-  - A review screen comparing your order with the correct order.
-
----
-
-### 6. ⌨️ Syntax Fill-in Challenge
-- **Description**: Complete missing keywords or function names in code snippets.
-- **Features**:
-  - Code snippets with blanks (`________`).
-  - Text input that is focused automatically.
-  - Case-insensitive answer checking.
-
----
-
-## 📚 Subject Modules
-
-Skillify includes question banks across 5 core Computer Science subjects:
-
-| Subject Module | Topics Covered | Interactive Challenges |
+| Feature Category | Phase 1 (Baseline) | Phase 2 (Current Release) |
 | :--- | :--- | :--- |
-| **🌐 HTML5 & Web Dev** | DOM manipulation, semantic HTML, CSS box model, event loop | Order layout tags, spot missing closing tags, fill in syntax |
-| **☕ Java Programming** | OOP, inheritance, multithreading, garbage collection, exception handling | Order try-catch-finally blocks, find thread-related bugs |
-| **🗄️ DBMS & SQL** | Relational model, ACID properties, indexing, joins, SQL clauses | Order SELECT, FROM, WHERE, GROUP BY, HAVING |
-| **💻 C Programming** | Pointers, dynamic memory (`malloc` / `free`), arrays, compilation pipeline | Order preprocessor → compiler → assembler → linker |
-| **⚙️ Operating Systems** | Process states, deadlocks, CPU scheduling (FCFS, SJF, Round Robin), virtual memory | Order process lifecycle (New → Ready → Running → Blocked → Terminated) |
+| **Question Sequencing** | Static, predictable order | **Fisher-Yates Randomization Engine** (Fresh order every attempt) |
+| **Practice Flow** | Manual restart required | **Dedicated "Retake with Shuffled Questions"** button |
+| **Academic Leaderboard** | Local modal summary | **Standalone `leaderboard.html`** with 3D Podium Medals & Avatars |
+| **Default Theme** | Defaulted to light mode | **Dark Forest Green (`#0B120E`) permanently set as default** |
+| **Background Dynamics** | Basic particle canvas | **Persistent 60fps Constellation Canvas** across all pages |
+| **Responsive Media** | Desktop-focused layout | **Grid Breakpoints** for Desktop, Tablet (2-col), & Mobile (1-col) |
+| **Architecture** | Basic frontend scripts | **Clean, modular, zero-dependency client architecture** |
 
 ---
 
-## 🏗️ Application Architecture & State Management
+## 🎮 7 Interactive Game Modes
 
-Skillify is a single-page-style application driven by a central `state` object in `quiz.js`:
+Skillify goes beyond standard multiple-choice quizzes with 7 distinct pedagogical game modes:
+
+1. 🎯 **Standard Quiz Arena:** Timed evaluations with instant rationales and progress tracking.
+2. ⚔️ **1v1 CyberBot AI Duel:** Play live against an adaptive simulated AI opponent with split-screen HUD progress meters.
+3. 🔗 **1v1 Challenge Link & QR Ghost Battle:** Generates a Base64-encoded URL and vector SVG QR code so friends can challenge the exact same question seed.
+4. ⚡ **True / False Speed Round:** Rapid-fire 5-second per question countdown with SVG circular ring animation and keyboard hotkeys (`T`/`F` or `←`/`→`).
+5. 🐛 **"Find the Bug" Line-Click Debugger:** Interactive code blocks where students click the exact line containing memory leaks or logic bugs.
+6. 🧩 **Interactive Drag & Drop:** Re-order execution sequences (e.g. SQL query clause hierarchy, thread lifecycles).
+7. ⌨️ **Syntax Completion Fill-in:** Inline code blanks testing keyword recall (`malloc`, `PRIMARY KEY`, `super()`).
+
+---
+
+## 📚 Core Subject Modules
+
+Skillify tests across 5 computer science pillars with curated academic questions:
+
+* **🌐 Frontend Engineering:** HTML5 semantics, CSS Grid/Flexbox, ES6+ asynchronous JavaScript, and DOM APIs.
+* **🗄️ Database Management (DBMS):** Relational schema design, 3NF normalization, ACID transactions, and SQL Join operations.
+* **☕ Java & OOP Architecture:** Polymorphism, inheritance hierarchies, JVM memory management, and multithreading.
+* **💻 Core C Programming:** Pointer arithmetic, dynamic memory allocation (`malloc`/`free`), and compiler pipelines.
+* **⚙️ Operating Systems:** CPU scheduling (Round Robin, SJF), process lifecycles, virtual memory, and deadlock prevention.
+
+---
+
+## 🎲 Fisher-Yates Shuffling Engine
+
+To prevent pattern memorization and test true conceptual mastery, Skillify implements a native **Fisher-Yates (Knuth) Shuffle Algorithm** inside `quiz.js`:
 
 ```javascript
-const state = {
-  gameMode: 'standard',       // 'standard', 'ai_duel', 'speed_tf', 'find_bug', 'drag_drop', 'code_blank'
-  currentCategoryKey: null,   // Selected subject key (e.g., 'frontend', 'dbms')
-  questions: [],              // Active array of question objects
-  currentIndex: 0,            // Index of the current question
-  userAnswers: [],            // The candidate's answers
-  timerSeconds: 20,           // Countdown value
-  timerInterval: null,        // Active timer handle
-  userStartTime: 0,           // Start timestamp for duration calculation
-  aiScore: 0,                 // CyberBot score
-  aiAnsweredMap: {},          // CyberBot answers per question
-  isFinished: false           // Quiz completion flag
-};
+/* Fisher-Yates Randomization Engine */
+function shuffleArray(array) {
+  if (!Array.isArray(array)) return [];
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
 ```
 
-### Execution Flow
-
-```
-[Subject Selection / Mode Switch] ──> [loadQuestion(index)] ──> [Render Interactive UI]
-                                                                        │
-[Submit / Finish] <── [Count Correct & Build Review] <── [User Input / Timer]
-```
+* Questions are shuffled dynamically upon selecting any subject.
+* Clicking **"🔄 Retake with Shuffled Questions"** immediately re-runs the shuffle for instant re-assessment.
 
 ---
 
-## 🎨 Design System & Theme Engine
+## 🏆 Hall of Fame Leaderboard & 3D Medals
 
-Colors and fonts are defined as CSS custom properties in `style.css`. The dark theme overrides the same variables, so every component updates when the theme changes.
+The **`leaderboard.html`** page provides a structured evaluation ranking showcase:
+
+* **🥇 1st Place (Gold Podium):** Metallic gold gradient chip with ambient golden glow.
+* **🥈 2nd Place (Silver Podium):** Polished platinum-chrome finish.
+* **🥉 3rd Place (Bronze Podium):** Warm burnished copper-bronze gradient.
+* **#4 & #5 Places:** Minimalist dark glassmorphic framed numeral chips.
+* **Monogram Avatars:** Candidate initials (`AR`, `PS`, `DC`, etc.) with gold/silver/bronze borders.
+* **Responsive Media Layout:** 4-card metric overview (*Benchmark Top, Cohort Avg, Ranked Candidates, Distinction Rate*) scaling automatically across mobile, tablet, and desktop viewports.
+
+---
+
+## 🌲 Design System & Dark Forest Green Theme
+
+Skillify features a bespoke dark design system crafted for long coding sessions and high visual contrast:
 
 ```css
 :root {
-  --paper: #F1F5F9;
-  --panel: #FFFFFF;
-  --ink: #0F172A;
-  --ink-soft: #475569;
-  --rule: #CBD5E1;
-  --accent: #059669;
-  --accent-soft: #D1FAE5;
-  --bad: #DC2626;
-  --bad-soft: #FEE2E2;
+  --bg-color: #0B120E;                   /* Signature Dark Forest Canvas */
+  --surface: rgba(18, 30, 23, 0.85);     /* Translucent Glass Card */
+  --surface-alt: rgba(14, 23, 18, 0.95); /* Deep Input Background */
+  --accent: #4ADE80;                      /* Radiant Emerald Green */
+  --accent-glow: rgba(74, 222, 128, 0.35);
+  --rule: rgba(74, 222, 128, 0.2);       /* Subtle Container Border */
+  --ink: #F1F5F9;                         /* High-Contrast Foreground */
+  --ink-muted: #94A3B8;                   /* Subtitle Neutral */
   --font-mono: 'JetBrains Mono', monospace;
   --font-body: 'Work Sans', sans-serif;
 }
-
-/* Dark Forest Theme */
-html.dark-theme {
-  --paper: #121A15;
-  --panel: #1A2620;
-  --ink: #E8EFE9;
-  --ink-soft: #9DB0A1;
-  --rule: #2C3E33;
-  --accent: #43A047;
-  --accent-soft: #1E3827;
-}
 ```
 
-### Visual Details
-- **Translucent panels** with subtle borders and shadows.
-- **Animation toggle**: users can turn off animations via the `body.fx-off` class.
-- **Responsive layout**: works from small phones (320px) to large desktop screens.
+### Key UI Features:
+* **Interactive Particle Constellation Canvas:** 60fps HTML5 canvas rendering connecting nodes based on proximity.
+* **✨ FX Toggle:** Users can pause background animations with a single click in the header.
+* **🌙 / ☀️ Theme Switcher:** Instant toggle between Dark Forest Green and Ambient Light themes.
 
 ---
 
-## 📂 Project File Map
+## 📂 Project Directory Structure
 
-```
+```text
 Skillify/
-├── index.html          # Landing page: hero, stats, live preview, FAQ
-├── quiz.html           # Quiz arena: subject grid, guidelines, questions, results
-├── quiz.js             # Quiz engine: question banks, game modes, timers, scoring
-├── about.html          # Mission, features, and team
-├── contact.html        # Contact form and feedback modal
-├── contact.js          # Form validation and feedback handlers
-├── login.html          # Login page
-├── register.html       # Registration page
-├── auth.js             # Accounts and session handling (browser storage)
-├── leaderboard.html    # Leaderboard page
-├── loading.html        # CSS-only page transition screen
-├── main.js             # Theme switcher, header scroll, mobile menu
-├── style.css           # Design system and theme variables
-├── VIVA_GUIDE.md       # Q&A for viva and technical interview preparation
-├── LICENSE             # MIT License
-└── README.md           # Project documentation
+├── index.html          # Landing portal: Hero, stats, live interactive preview widget, & FAQ
+├── quiz.html           # Quiz Arena: Subject selection, game mode switch, & quiz runner
+├── quiz.js             # Core Engine: Fisher-Yates shuffling, 7 game modes, AI bot timer
+├── api.js              # Frontend API Client: REST endpoints, JWT auth session, & database sync
+├── leaderboard.html    # Academic Hall of Fame with 3D podium medals & responsive media cards
+├── about.html          # Team credentials, project architecture narrative, & methodology
+├── contact.html        # Interactive inquiry form with real-time field validation
+├── contact.js          # Client-side feedback form validation
+├── login.html          # Candidate Sign In interface
+├── register.html       # Candidate Registration interface
+├── auth.js             # Session management & user greeting persistence
+├── main.js             # Global theme engine (dark default), particle canvas, & mobile menu
+├── style.css           # Complete modular design system stylesheet (2,600+ lines)
+└── README.md           # Master documentation
 ```
 
 ---
 
-## 🔐 Authentication & Data Persistence
+## 👥 Project Team (PID-6)
 
-Skillify has no backend server. Data is stored in the browser:
+Developed as a flagship **Front-End Engineering (FEE-II)** course project:
 
-1. **Accounts & Login (`auth.js`)**
-   - Registered users are saved in `localStorage` under `skillify_users`.
-   - The logged-in user is kept in `sessionStorage` or `localStorage` (`currentUser`).
-   - The navbar shows the user's name or a Login link.
-
-2. **Score History (`quiz.js`)**
-   - Attempts, dates, percentages, and subject scores are saved under `skillify_score_history`.
-   - Used to review past results and track progress.
-
-3. **Preferences (`main.js`)**
-   - Theme (light or dark) and animation settings (`skillify_fx`) are saved between visits.
-
-> **Security note:** Passwords are stored in the browser for this demo. This is not secure. Do not use real credentials, and do not treat this as a production authentication system.
-
----
-
-## ⌨️ Keyboard Controls & Shortcuts
-
-| Context | Key | Action |
+| Member | Role | Key Contributions |
 | :--- | :--- | :--- |
-| **Speed T/F** | `T` or `←` | Select TRUE |
-| **Speed T/F** | `F` or `→` | Select FALSE |
-| **Drag & Drop** | `↑` (item focused) | Move item up |
-| **Drag & Drop** | `↓` (item focused) | Move item down |
-| **Quiz** | `Enter` | Submit answer / next question |
+| **Rhythm Uppal** *(Team Lead)* | Frontend Architecture & Logic Lead | Core Quiz Engine, Fisher-Yates Shuffling, Retake Engine |
+| **Pehoo Angrish** | UI/UX & Interactive Design Lead | Academic Leaderboard (`leaderboard.html`), 3D Medal Podium Layout |
+| **Heemanshu Singh** | Systems Integration & Theme Lead | Default Dark Forest Green Engine, Shared Header & Spacing |
 
 ---
 
-## 💻 Installation & Local Setup
+## 🚀 Quick Start & How to Run
 
-No build tools, packages, or compilers are needed.
+Skillify is 100% pure client-side code and requires **zero build steps, zero compilers, and zero external packages**.
 
+### Option 1: Direct File Launch
+Double-click **`index.html`** in your file manager to open directly in Google Chrome, Microsoft Edge, Mozilla Firefox, or Safari.
+
+### Option 2: Local HTTP Server
 ```bash
-# 1. Clone the repository
-git clone https://github.com/Rhythmuppal18/Skillify.git
-cd Skillify
+# Using Python
+python -m http.server 3000
 
-# 2a. Open directly
-#     Double-click index.html (or quiz.html) in Chrome, Firefox, Edge, Safari, or Brave
-
-# 2b. Or run a local server
-python -m http.server 8000
-# Then open http://localhost:8000
+# Using Node.js
+npx serve .
 ```
+Navigate to `http://localhost:3000` in your browser.
 
 ---
 
-## 📜 Certification Engine
+## 📜 Certificate of Mastery Engine
 
-- **Eligibility**: Score **80% or higher** on a quiz.
-- **Certificate of Mastery**: A printable certificate showing the candidate's name, subject, score, date, and a verification ID.
-- **Print / Save PDF**: Use the built-in button to print or save the certificate.
-
----
-
-## 🎓 Viva & Technical Examination Guide
-
-For lab tests, viva, and interview preparation, see [`VIVA_GUIDE.md`](VIVA_GUIDE.md). It covers:
-- Explanations of the CS concepts in each module.
-- Q&A on DOM manipulation, event delegation, layout algorithms, and browser storage.
-- Why the project uses vanilla ES6 JavaScript instead of a framework.
-
----
-
-## 📄 License & Acknowledgments
-
-- **License**: [MIT License](LICENSE)
-- **Fonts**: [Work Sans](https://fonts.google.com/specimen/Work+Sans) and [JetBrains Mono](https://fonts.google.com/specimen/JetBrains+Mono) via Google Fonts.
-- **Icons**: Standard Unicode emoji.
+Candidates who demonstrate academic excellence by achieving **$\ge 80\%$ accuracy** unlock the official **Skillify Certificate of Mastery**:
+* Dynamically embeds candidate name, subject title, achieved score percentage, verification ID, and date stamp.
+* One-click print / save to PDF via native browser print styling.
 
 ---
 
 <p align="center">
-  <strong>Skillify</strong> — Crafted for Computer Science mastery.
+  <strong>© 2026 Skillify · Team PID-6 · Front-End Engineering II Project</strong><br>
+  <em>Engineered for computer science excellence.</em>
 </p>
